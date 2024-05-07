@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "firstApp",
-    "slug": "firstApp",
+    "name": "barber-frontEnd",
+    "slug": "barber-frontEnd",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
