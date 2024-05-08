@@ -1,12 +1,4 @@
-import React from 'react';
-import {
-  Pressable,
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 
 export default function FormLogin({ navigation }) {
@@ -21,7 +13,14 @@ export default function FormLogin({ navigation }) {
     },
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    const { name, password } = data;
+    if (name === 'jardas' && password === 'jardas') {
+      return navigation.navigate('Home');
+    } else {
+      return Alert.alert('Usuário não encontrado');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -32,8 +31,7 @@ export default function FormLogin({ navigation }) {
         rules={{
           required: true,
           pattern: {
-            message: 'Email inválido',
-            value: /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i,
+            message: 'Nome inválido',
           },
         }}
         render={({ field: { value, onChange, onBlur } }) => (
@@ -72,17 +70,6 @@ export default function FormLogin({ navigation }) {
         </Text>
       )}
       <Button title="Entrar" onPress={handleSubmit(onSubmit)} />
-      <Pressable style={styles.signUpButton}>
-        <Text style={styles.signUpText}>
-          Ainda não tem uma conta?{' '}
-          <Text
-            style={styles.signUpLink}
-            onPress={() => navigation.navigate('Cadastro')}
-          >
-            Cadastre-se
-          </Text>
-        </Text>
-      </Pressable>
     </View>
   );
 }
@@ -111,15 +98,5 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 10,
-  },
-  signUpButton: {
-    marginTop: 20,
-  },
-  signUpText: {
-    textAlign: 'center',
-  },
-  signUpLink: {
-    fontWeight: 'bold',
-    color: 'blue',
   },
 });
