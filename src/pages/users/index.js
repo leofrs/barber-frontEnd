@@ -1,38 +1,74 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { data } from '../../../db/datas';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/contextProvider';
+
+import { UserService } from '../../services/user';
+const userService = new UserService();
+
+import NavBar from '../../components/sair';
 
 export default function DataPage({ navigation }) {
   const [userData, setUserData] = useState(null);
 
+  const { user } = useContext(AuthContext);
+
   useEffect(() => {
-    const userData = data();
-    setUserData(userData);
+    const fetchUserData = async () => {
+      try {
+        const userData = await userService.getCalendario();
+        setUserData(userData);
+      } catch (error) {
+        console.error('Erro ao buscar os dados da data:', error);
+      }
+    };
+
+    fetchUserData();
   }, []);
+
+  const handleHorarios = async (diaSemanaId, dia, data) => {
+    try {
+      const horarios = await userService.apiHorariosDisponiveis(diaSemanaId);
+      if (horarios) {
+        navigation.navigate('Horarios', { diaSemanaId, dia, data, horarios });
+      } else {
+        Alert.alert('erro foi encontrado, tente novamente');
+      }
+    } catch (error) {
+      Alert.alert(`Error na requisição foi encontrado: ${error}`);
+    }
+  };
   return (
     <View style={styles.container}>
-      <Text style={{ marginBottom: 20 }}>Seja bem vindo - Jardas - !</Text>
-      <Text>Logo vai aqui</Text>
+      <StatusBar hidden />
+      <Text style={{ marginBottom: 20, color: '#FFEFC7' }}>
+        Seja bem vindo {user}!
+      </Text>
+      <Image source={require('../../../assets/logo.png')} style={styles.logo} />
+
       <View style={styles.cardContainer}>
         {userData &&
           userData.map((item) => (
             <TouchableOpacity
               key={item.id}
               style={styles.card}
-              onPress={() =>
-                navigation.navigate('Horários', {
-                  dia: item.dia,
-                  data: item.data,
-                  manha: item.manha,
-                  tarde: item.tarde,
-                })
-              }
+              onPress={() => handleHorarios(item.id, item.dia, item.data)}
             >
               <Text>Dia: {item.dia}</Text>
               <Text>Data: {item.data}</Text>
             </TouchableOpacity>
           ))}
       </View>
+      <NavBar />
     </View>
   );
 }
@@ -43,11 +79,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: '#000000',
   },
   cardContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    marginBottom: 25,
   },
   card: {
     backgroundColor: '#fff',
@@ -88,5 +126,10 @@ const styles = StyleSheet.create({
   signUpLink: {
     fontWeight: 'bold',
     color: 'blue',
+  },
+  logo: {
+    width: 200,
+    height: 200,
+    marginBottom: 15,
   },
 });

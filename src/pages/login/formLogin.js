@@ -1,5 +1,19 @@
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { useContext } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  Pressable,
+  Image,
+} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { useForm, Controller } from 'react-hook-form';
+import { AuthContext } from '../../context/contextProvider';
+
+import { UserService } from '../../services/user';
 
 export default function FormLogin({ navigation }) {
   const {
@@ -13,63 +27,138 @@ export default function FormLogin({ navigation }) {
     },
   });
 
+  const { setUser, setIsAdmin } = useContext(AuthContext);
+  const userService = new UserService();
+
+  const admin = { name: 'jardel', password: 'jaja' };
+
   const onSubmit = (data) => {
     const { name, password } = data;
-    if (name === 'jardas' && password === 'jardas') {
-      return navigation.navigate('Home');
-    } else {
-      return Alert.alert('Usuário não encontrado');
+    try {
+      if (!password) {
+        Alert.alert('Erro', 'Por favor, insira sua senha');
+        return;
+      }
+      if (name === admin.name && password === admin.password) {
+        setIsAdmin(name);
+        navigation.navigate('AdminHome');
+        Alert.alert(
+          `Seja bem vindo ${name}`,
+          'Você está logado como administrador.'
+        );
+        return;
+      }
+      const loginUser = userService.getUser({ name, password });
+      if (loginUser) {
+        setUser(name);
+        navigation.navigate('HomeUser');
+        Alert.alert(
+          `Seja bem vindo ${name}`,
+          'Atendimento de Segunda à Sexta com horário marcado. Aos Sabádos é por ordem de chegada.'
+        );
+      }
+    } catch (error) {
+      Alert.alert('Error', `Error ao fazer login foi encontrado: ${error}`);
     }
   };
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Faça o login com sua conta</Text>
-      <Controller
-        control={control}
-        name="name"
-        rules={{
-          required: true,
-          pattern: {
-            message: 'Nome inválido',
-          },
-        }}
-        render={({ field: { value, onChange, onBlur } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="Insira seu nome"
-            value={value}
-            onChangeText={onChange}
-            autoCapitalize="none"
-            onBlur={onBlur}
-          />
+      <StatusBar hidden />
+      <View style={{ alignItems: 'center' }}>
+        <Image
+          source={require('../../../assets/logo.png')}
+          style={styles.logo}
+        />
+      </View>
+
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <Text style={styles.title}>Faça o login com sua conta</Text>
+      </View>
+
+      <View style={{ width: 300, marginTop: 35 }}>
+        <Controller
+          control={control}
+          name="name"
+          rules={{
+            required: true,
+            pattern: {
+              message: 'Nome inválido',
+            },
+          }}
+          render={({ field: { value, onChange, onBlur } }) => (
+            <TextInput
+              style={styles.input}
+              placeholder="Insira seu nome"
+              placeholderTextColor={'#FFEFC7'}
+              value={value}
+              onChangeText={onChange}
+              autoCapitalize="none"
+              onBlur={onBlur}
+            />
+          )}
+        />
+        {errors.name && (
+          <Text style={styles.errorText}>Nome é obrigatório.</Text>
         )}
-      />
-      {errors.name && <Text style={styles.errorText}>Nome é obrigatório.</Text>}
-      <Controller
-        control={control}
-        name="password"
-        rules={{
-          minLength: 4,
-        }}
-        render={({ field: { value, onChange, onBlur } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="Insira sua senha"
-            value={value}
-            onChangeText={onChange}
-            autoCapitalize="none"
-            onBlur={onBlur}
-            secureTextEntry
-          />
+
+        <Controller
+          control={control}
+          name="password"
+          rules={{
+            minLength: 4,
+            required: true,
+          }}
+          render={({ field: { value, onChange, onBlur } }) => (
+            <TextInput
+              style={styles.input}
+              placeholder="Insira sua senha"
+              placeholderTextColor={'#FFEFC7'}
+              value={value}
+              onChangeText={onChange}
+              autoCapitalize="none"
+              onBlur={onBlur}
+              secureTextEntry
+            />
+          )}
+        />
+        {errors.password && (
+          <Text style={styles.errorText}>
+            Senha deve conter no mínimo 4 caracteres.
+          </Text>
         )}
-      />
-      {errors.password && (
-        <Text style={styles.errorText}>
-          Senha deve conter no mínimo 4 caracteres.
+
+        <Button
+          color={'blue'}
+          title="Entrar"
+          onPress={handleSubmit(onSubmit)}
+        />
+      </View>
+
+      <View style={{ marginTop: 25, width: 350 }}>
+        <Pressable>
+          <Text style={styles.signUpText}>
+            Ainda não possui uma conta?{' '}
+            <Text
+              style={styles.signUpLink}
+              onPress={() => navigation.navigate('Cadastro')}
+            >
+              Cadastre-se
+            </Text>
+          </Text>
+        </Pressable>
+      </View>
+
+      <View
+        style={{
+          maxWidth: 400,
+          marginTop: 55,
+          color: '#ffffff',
+        }}
+      >
+        <Text>
+          * Todos os sabádos a agenda para a próxima semana é liberada!
         </Text>
-      )}
-      <Button title="Entrar" onPress={handleSubmit(onSubmit)} />
+      </View>
     </View>
   );
 }
@@ -77,14 +166,14 @@ export default function FormLogin({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    padding: 5,
     alignItems: 'center',
-    padding: 20,
+    backgroundColor: '#000000',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: '#FFEFC7',
   },
   input: {
     width: '100%',
@@ -92,11 +181,26 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    color: '#ffffff',
   },
   errorText: {
     color: 'red',
     marginBottom: 10,
+  },
+  signUpText: {
+    textAlign: 'center',
+    color: '#ffffff',
+  },
+  signUpLink: {
+    fontWeight: 'bold',
+    color: '#FFEFC7',
+    fontStyle: 'italic',
+  },
+  logo: {
+    width: 200,
+    height: 200,
+    marginBottom: 15,
   },
 });

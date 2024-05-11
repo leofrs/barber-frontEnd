@@ -1,13 +1,17 @@
-import React from 'react';
+import { useContext } from 'react';
 import {
-  Pressable,
   View,
   Text,
   TextInput,
   Button,
   StyleSheet,
+  Alert,
+  Pressable,
+  Image,
 } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { useForm, Controller } from 'react-hook-form';
+import { UserService } from '../../services/user';
 
 export default function FormLogin({ navigation }) {
   const {
@@ -17,89 +21,146 @@ export default function FormLogin({ navigation }) {
   } = useForm({
     defaultValues: {
       name: '',
+      email: '',
       password: '',
     },
   });
 
-  const onSubmit = (data) => console.log(data);
+  const userService = new UserService();
+
+  const onSubmit = (data) => {
+    const { name, email, password } = data;
+    try {
+      if (!name && !email && !password) {
+        Alert.alert('Erro', 'Por favor, preencha todos os campos');
+        return;
+      }
+      const registerUser = userService.postUser({ name, email, password });
+      if (registerUser) {
+        Alert.alert('Sucesso!', `Usúario ${data.name} cadastrado com sucesso`);
+        navigation.navigate('Login');
+      }
+    } catch (error) {
+      Alert.alert('Error', `Error encontrado: ${error}`);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Faça seu cadastro</Text>
-      <Controller
-        control={control}
-        name="name"
-        rules={{
-          required: true,
-          pattern: {
-            message: 'Nome inválido',
-            value: /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i,
-          },
-        }}
-        render={({ field: { value, onChange, onBlur } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="Insira seu nome"
-            value={value}
-            onChangeText={onChange}
-            autoCapitalize="none"
-            onBlur={onBlur}
-          />
+      <StatusBar hidden />
+      <View style={{ alignItems: 'center' }}>
+        <Image
+          source={require('../../../assets/logo.png')}
+          style={styles.logo}
+        />
+      </View>
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <Text style={styles.title}>Faça o seu cadastro</Text>
+      </View>
+      <View style={{ width: 300, marginTop: 35 }}>
+        <Controller
+          control={control}
+          name="name"
+          rules={{
+            required: true,
+          }}
+          render={({ field: { value, onChange, onBlur } }) => (
+            <TextInput
+              style={styles.input}
+              placeholder="Insira seu nome"
+              placeholderTextColor={'#FFEFC7'}
+              value={value}
+              onChangeText={onChange}
+              autoCapitalize="none"
+              onBlur={onBlur}
+            />
+          )}
+        />
+        {errors.name && (
+          <Text style={styles.errorText}>Nome é obrigatório.</Text>
         )}
-      />
-      {errors.name && <Text style={styles.errorText}>Nome é obrigatório.</Text>}
-      <Controller
-        control={control}
-        name="telefone"
-        rules={{
-          required: true,
-        }}
-        render={({ field: { value, onChange, onBlur } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="Insira seu número de telefone"
-            value={value}
-            onChangeText={onChange}
-            autoCapitalize="none"
-            onBlur={onBlur}
-          />
+        <Controller
+          control={control}
+          name="email"
+          rules={{
+            required: true,
+            pattern: {
+              message: 'Email invalido',
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            },
+          }}
+          render={({ field: { value, onChange, onBlur } }) => (
+            <TextInput
+              style={styles.input}
+              placeholder="Insira seu email"
+              placeholderTextColor={'#FFEFC7'}
+              value={value}
+              onChangeText={onChange}
+              autoCapitalize="none"
+              onBlur={onBlur}
+            />
+          )}
+        />
+        {errors.email && (
+          <Text style={styles.errorText}>Email é obrigatório.</Text>
         )}
-      />
-      <Controller
-        control={control}
-        name="password"
-        rules={{
-          minLength: 4,
-        }}
-        render={({ field: { value, onChange, onBlur } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="Insira sua senha"
-            value={value}
-            onChangeText={onChange}
-            autoCapitalize="none"
-            onBlur={onBlur}
-            secureTextEntry
-          />
-        )}
-      />
-      {errors.password && (
-        <Text style={styles.errorText}>
-          Senha deve conter no mínimo 4 caracteres.
-        </Text>
-      )}
-      <Button title="Entrar" onPress={handleSubmit(onSubmit)} />
-      <Pressable style={styles.signUpButton}>
-        <Text style={styles.signUpText}>
-          Já possui uma conta?{' '}
-          <Text
-            style={styles.signUpLink}
-            onPress={() => navigation.navigate('Login')}
-          >
-            Faça o login
+        <Controller
+          control={control}
+          name="password"
+          rules={{
+            minLength: 4,
+            required: true,
+          }}
+          render={({ field: { value, onChange, onBlur } }) => (
+            <TextInput
+              style={styles.input}
+              placeholder="Insira sua senha"
+              placeholderTextColor={'#FFEFC7'}
+              value={value}
+              onChangeText={onChange}
+              autoCapitalize="none"
+              onBlur={onBlur}
+              secureTextEntry
+            />
+          )}
+        />
+        {errors.password && (
+          <Text style={styles.errorText}>
+            Senha deve conter no mínimo 4 caracteres.
           </Text>
+        )}
+        <Button
+          color={'blue'}
+          title="Cadastrar"
+          onPress={handleSubmit(onSubmit)}
+        />
+      </View>
+
+      <View style={{ marginTop: 25, width: 350 }}>
+        <Pressable>
+          <Text style={styles.signUpText}>
+            Já possui uma conta?{' '}
+            <Text
+              style={styles.signUpLink}
+              onPress={() => navigation.navigate('Login')}
+            >
+              Entrar
+            </Text>
+          </Text>
+        </Pressable>
+      </View>
+
+      <View
+        style={{
+          maxWidth: 400,
+          marginTop: 55,
+          color: '#ffffff',
+        }}
+      >
+        <Text>
+          * Todos os sabádos a agenda para a próxima semana é liberada!
         </Text>
-      </Pressable>
+      </View>
     </View>
   );
 }
@@ -107,14 +168,15 @@ export default function FormLogin({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 5,
+    backgroundColor: '#000000',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#FFEFC7',
   },
   input: {
     width: '100%',
@@ -123,7 +185,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     paddingHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 20,
   },
   errorText: {
     color: 'red',
@@ -134,9 +196,16 @@ const styles = StyleSheet.create({
   },
   signUpText: {
     textAlign: 'center',
+    color: '#ffffff',
   },
   signUpLink: {
     fontWeight: 'bold',
-    color: 'blue',
+    color: '#FFEFC7',
+    fontStyle: 'italic',
+  },
+  logo: {
+    width: 200,
+    height: 200,
+    marginBottom: 15,
   },
 });
