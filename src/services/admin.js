@@ -9,4 +9,29 @@ export class AdminService {
     });
     return getUser;
   }
+
+  async apiHorariosDisponiveis(diaSemanaId) {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(diaSemanaId),
+    };
+    const response = await fetch(
+      `http://192.168.1.110:3001/horariosDisponiveis?diaSemanaId=${diaSemanaId}`
+    )
+      .then((response) => response.json())
+      .catch((error) => Alert.alert('Erro ao enviar requisição:', error));
+
+    return response;
+  }
+
+  async getCalendario() {
+    const apiCalendario = await fetch('http://192.168.1.110:3001/calendario')
+      .then((response) => response.json())
+      .catch((error) => Alert.alert('Erro ao enviar requisição:', error));
+
+    return apiCalendario;
+  }
 }

@@ -157,7 +157,7 @@ export default function FormLogin({ navigation }) {
           color: '#ffffff',
         }}
       >
-        <Text>
+        <Text style={{ color: 'white', maxWidth: 300, textAlign: 'center' }}>
           * Todos os sabádos a agenda para a próxima semana é liberada!
         </Text>
       </View>

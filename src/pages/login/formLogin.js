@@ -34,22 +34,18 @@ export default function FormLogin({ navigation }) {
 
   const onSubmit = (data) => {
     const { name, password } = data;
+    const loginUser = userService.getUser({ name, password });
     try {
-      if (!password) {
-        Alert.alert('Erro', 'Por favor, insira sua senha');
-        return;
-      }
       if (name === admin.name && password === admin.password) {
-        setIsAdmin(name);
+        setUser(name);
+        setIsAdmin(true);
         navigation.navigate('AdminHome');
         Alert.alert(
           `Seja bem vindo ${name}`,
           'Você está logado como administrador.'
         );
         return;
-      }
-      const loginUser = userService.getUser({ name, password });
-      if (loginUser) {
+      } else if (loginUser) {
         setUser(name);
         navigation.navigate('HomeUser');
         Alert.alert(
@@ -61,6 +57,7 @@ export default function FormLogin({ navigation }) {
       Alert.alert('Error', `Error ao fazer login foi encontrado: ${error}`);
     }
   };
+
   return (
     <View style={styles.container}>
       <StatusBar hidden />
@@ -155,7 +152,7 @@ export default function FormLogin({ navigation }) {
           color: '#ffffff',
         }}
       >
-        <Text>
+        <Text style={{ color: 'white', maxWidth: 300, textAlign: 'center' }}>
           * Todos os sabádos a agenda para a próxima semana é liberada!
         </Text>
       </View>

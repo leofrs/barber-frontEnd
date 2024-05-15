@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { View, Text, StyleSheet, Alert, Button } from 'react-native';
+import { View, Alert, Button } from 'react-native';
 import { AuthContext } from '../context/contextProvider';
 
 export default function NavBar({ navigation }) {

@@ -5,8 +5,11 @@ import RegisterPage from './src/pages/register';
 import UsersPage from './src/pages/users';
 import AdminPage from './src/pages/admin';
 import DataDetailsScreen from './src/pages/users/horarios/index';
+import DataDetailsScreenAdmin from './src/pages/admin/agenda/horarios/index';
 
 import ContextProvider, { AuthContext } from './src/context/contextProvider';
+import UsersDetalilsScreen from './src/pages/admin/clients';
+import { HorariosMarcados } from './src/pages/admin/agenda';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,21 +54,70 @@ export default function App() {
                       }}
                     />
                     {isAdmin && (
-                      <Stack.Screen
-                        name="AdminHome"
-                        component={AdminPage}
-                        options={{
-                          title: 'Admin Home',
-                          headerTitleStyle: {
-                            color: '#FFEFC7',
-                          },
-                          headerTitleAlign: 'center',
+                      <>
+                        <Stack.Screen
+                          name="AdminHome"
+                          component={AdminPage}
+                          options={{
+                            title: 'Admin Home',
+                            headerTintColor: '#000',
+                            headerTitleStyle: {
+                              color: '#FFEFC7',
+                              fontWeight: 'bold',
+                            },
+                            headerTitleAlign: 'center',
 
-                          headerStyle: {
-                            backgroundColor: '#000000',
-                          },
-                        }}
-                      />
+                            headerStyle: {
+                              backgroundColor: '#000000',
+                            },
+                          }}
+                        />
+                        <Stack.Screen
+                          name="Clients"
+                          component={UsersDetalilsScreen}
+                          options={{
+                            title: 'Clientes',
+                            headerTintColor: '#FFEFC7',
+                            headerTitleStyle: {
+                              color: '#FFEFC7',
+                            },
+                            headerTitleAlign: 'center',
+                            headerStyle: {
+                              backgroundColor: '#000000',
+                            },
+                          }}
+                        />
+                        <Stack.Screen
+                          name="Agenda"
+                          component={HorariosMarcados}
+                          options={{
+                            title: 'Agenda',
+                            headerTintColor: '#FFEFC7',
+                            headerTitleStyle: {
+                              color: '#FFEFC7',
+                            },
+                            headerTitleAlign: 'center',
+                            headerStyle: {
+                              backgroundColor: '#000000',
+                            },
+                          }}
+                        />
+                        <Stack.Screen
+                          name="HorariosAdmin"
+                          component={DataDetailsScreenAdmin}
+                          options={{
+                            title: 'Horários',
+                            headerTintColor: '#FFEFC7',
+                            headerTitleStyle: {
+                              color: '#FFEFC7',
+                            },
+                            headerTitleAlign: 'center',
+                            headerStyle: {
+                              backgroundColor: '#000000',
+                            },
+                          }}
+                        />
+                      </>
                     )}
                   </Stack.Navigator>
                 </>
@@ -109,14 +161,3 @@ export default function App() {
     </ContextProvider>
   );
 }
-const config = {
-  animation: '',
-  config: {
-    stiffness: 1000,
-    damping: 500,
-    mass: 3,
-    overshootClamping: true,
-    restDisplacementThreshold: 0.01,
-    restSpeedThreshold: 0.01,
-  },
-};

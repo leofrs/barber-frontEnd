@@ -1,44 +1,34 @@
+import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { useContext } from 'react';
-import { AuthContext } from '../../context/contextProvider';
 
-import { UserService } from '../../services/user';
-const userService = new UserService();
+import { AdminService } from '../../../services/admin';
+const adminService = new AdminService();
 
-import NavBar from '../../components/sair';
-
-export default function DataPage({ navigation }) {
-  const [userData, setUserData] = useState(null);
-
-  const { user } = useContext(AuthContext);
+export function HorariosMarcados({ navigation }) {
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userData = await userService.getCalendario();
-        setUserData(userData);
+        const userData = await adminService.getCalendario();
+        setData(userData);
       } catch (error) {
         console.error('Erro ao buscar os dados da data:', error);
       }
     };
 
     fetchUserData();
-  }, []);
-
+  });
   const handleHorarios = async (diaSemanaId, dia, data) => {
     try {
-      const horarios = await userService.apiHorariosDisponiveis(diaSemanaId);
+      const horarios = await adminService.apiHorariosDisponiveis(diaSemanaId);
       if (horarios) {
-        navigation.navigate('Horarios', { diaSemanaId, dia, data, horarios });
+        navigation.navigate('HorariosAdmin', {
+          diaSemanaId,
+          dia,
+          data,
+          horarios,
+        });
       } else {
         Alert.alert('erro foi encontrado, tente novamente');
       }
@@ -48,15 +38,9 @@ export default function DataPage({ navigation }) {
   };
   return (
     <View style={styles.container}>
-      <StatusBar hidden />
-      <Text style={{ marginBottom: 20, color: '#FFEFC7' }}>
-        Seja bem vindo {user}!
-      </Text>
-      <Image source={require('../../../assets/logo.png')} style={styles.logo} />
-
       <View style={styles.cardContainer}>
-        {userData &&
-          userData.map((item) => (
+        {data &&
+          data.map((item) => (
             <TouchableOpacity
               key={item.id}
               style={styles.card}
@@ -67,7 +51,6 @@ export default function DataPage({ navigation }) {
             </TouchableOpacity>
           ))}
       </View>
-      <NavBar />
     </View>
   );
 }
