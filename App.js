@@ -1,13 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ContextProvider, { AuthContext } from './src/context/contextProvider';
+import HomePage from './src/pages/home';
 import LoginPage from './src/pages/login';
 import RegisterPage from './src/pages/register';
 import UsersPage from './src/pages/users';
 import AdminPage from './src/pages/admin';
 import DataDetailsScreen from './src/pages/users/horarios/index';
 import DataDetailsScreenAdmin from './src/pages/admin/agenda/horarios/index';
-
-import ContextProvider, { AuthContext } from './src/context/contextProvider';
 import UsersDetalilsScreen from './src/pages/admin/clients';
 import { HorariosMarcados } from './src/pages/admin/agenda';
 
@@ -16,7 +16,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <ContextProvider>
-      <NavigationContainer>
+      <NavigationContainer independent={true}>
         <AuthContext.Consumer>
           {({ user, isAdmin }) => (
             <>
@@ -124,15 +124,23 @@ export default function App() {
               ) : (
                 <Stack.Navigator>
                   <Stack.Screen
+                    name="Home"
+                    component={HomePage}
+                    options={{
+                      title: 'Home',
+                      headerShown: false,
+                    }}
+                  />
+                  <Stack.Screen
                     name="Login"
                     component={LoginPage}
                     options={{
-                      title: '',
+                      title: 'Home',
 
                       headerTitleStyle: {
                         color: '#FFEFC7',
                       },
-                      headerTitleAlign: 'center',
+                      headerTintColor: '#FFEFC7',
                       headerStyle: {
                         backgroundColor: '#000000',
                       },

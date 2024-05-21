@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { DataTable } from 'react-native-paper';
 
+import { format } from 'date-fns';
+
 import { AdminService } from '../../../../services/admin';
 const adminService = new AdminService();
 
@@ -11,14 +13,24 @@ const DataDetailsScreenAdmin = ({ route }) => {
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
   const [horariosDisponiveis, setHorariosDisponiveis] = useState([]);
 
+  const formattedDate = format(new Date(data), 'dd/MM/yyyy');
+
   useEffect(() => {
     const fetchHorariosDisponiveis = async () => {
       try {
         const horariosDisponiveis = await Promise.all(
           horarios.map(async (horario) => {
             if (horario.userId) {
-              const user = await adminService.getUserById(horario.userId);
-              return { ...horario, userName: user.name };
+              try {
+                const user = await adminService.getUserById(horario.userId);
+                return { ...horario, userName: user.name };
+              } catch (error) {
+                console.error(
+                  `Erro ao buscar usuário com ID ${horario.userId}:`,
+                  error
+                );
+                return horario; // Retorne o horário original se houver um erro
+              }
             } else {
               return horario;
             }
@@ -47,37 +59,67 @@ const DataDetailsScreenAdmin = ({ route }) => {
       <StatusBar hidden />
       <View style={styles.textContainer}>
         <Text style={styles.text}>Dia: {dia}</Text>
-        <Text style={styles.text}>Data: {data}</Text>
+        <Text style={styles.text}>Data: {formattedDate}</Text>
       </View>
       <View style={styles.contentContainer}>
-        <Text style={styles.text}>Horários disponíveis:</Text>
         <DataTable>
-          <DataTable.Header>
-            <DataTable.Title>Horário</DataTable.Title>
-            <DataTable.Title>Disponível</DataTable.Title>
-            <DataTable.Title>Usuário</DataTable.Title>
+          <DataTable.Header style={styles.tableHeader}>
+            <DataTable.Title
+              style={{
+                justifyContent: 'center',
+              }}
+            >
+              Horário
+            </DataTable.Title>
+            <DataTable.Title
+              style={{
+                justifyContent: 'center',
+              }}
+            >
+              Disponível
+            </DataTable.Title>
+            <DataTable.Title
+              style={{
+                justifyContent: 'center',
+              }}
+            >
+              Cliente
+            </DataTable.Title>
           </DataTable.Header>
 
           {horariosDisponiveis.map((item) => (
-            <DataTable.Row
-              key={item.id}
-              onPress={() => selecionarHorario(item.id)}
-              style={
-                horarioSelecionado === item.id ? styles.disabledCard : null
-              }
-            >
-              <DataTable.Cell>{item.horario}</DataTable.Cell>
-              <DataTable.Cell>{item.disponivel ? 'Sim' : 'Não'}</DataTable.Cell>
-              <DataTable.Cell>{item.userName}</DataTable.Cell>
+            <DataTable.Row key={item.id} style={{ borderColor: '#000' }}>
+              <DataTable.Cell
+                style={{
+                  width: '100%',
+                  backgroundColor: '#DCDCDC',
+                  justifyContent: 'center',
+                }}
+              >
+                {item.horario}
+              </DataTable.Cell>
+              <DataTable.Cell
+                style={{
+                  width: '100%',
+                  backgroundColor: '#DCDCDC',
+                  justifyContent: 'center',
+                }}
+              >
+                {item.disponivel ? 'Sim' : 'Não'}
+              </DataTable.Cell>
+              <DataTable.Cell
+                style={{
+                  width: '100%',
+                  backgroundColor: '#DCDCDC',
+
+                  justifyContent: 'center',
+                }}
+              >
+                {item.userName}
+              </DataTable.Cell>
             </DataTable.Row>
           ))}
         </DataTable>
-      </View>
-      <View style={styles.footerContainer}>
-        <Text>
-          * Os horários disponíveis ficam em verde e os que não estão
-          disponíveis ficam em vermelho
-        </Text>
       </View>
     </View>
   );
@@ -86,12 +128,16 @@ const DataDetailsScreenAdmin = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
     height: '100%',
     padding: 20,
     paddingHorizontal: 55,
+    backgroundColor: '#000',
+  },
+  tableHeader: {
+    backgroundColor: '#DCDCDC',
   },
   textContainer: {
     maxWidth: 300,
@@ -106,19 +152,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
   },
-  footerContainer: {
-    maxWidth: 300,
-    height: 'auto',
-    marginBottom: 25,
-    alignItems: 'center',
-    color: '#fff',
-  },
   text: {
-    color: '#000',
+    color: '#fff',
     marginBottom: 10,
-  },
-  disabledCard: {
-    backgroundColor: '#FF0000',
   },
 });
 

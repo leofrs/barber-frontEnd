@@ -2,6 +2,9 @@ import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 
 import { AdminService } from '../../../services/admin';
+
+import { format } from 'date-fns';
+
 const adminService = new AdminService();
 
 export function HorariosMarcados({ navigation }) {
@@ -40,16 +43,20 @@ export function HorariosMarcados({ navigation }) {
     <View style={styles.container}>
       <View style={styles.cardContainer}>
         {data &&
-          data.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              style={styles.card}
-              onPress={() => handleHorarios(item.id, item.dia, item.data)}
-            >
-              <Text>Dia: {item.dia}</Text>
-              <Text>Data: {item.data}</Text>
-            </TouchableOpacity>
-          ))}
+          data.map((item) => {
+            const formattedDate = format(new Date(item.data), 'dd/MM/yyyy');
+
+            return (
+              <TouchableOpacity
+                key={item.id}
+                style={styles.card}
+                onPress={() => handleHorarios(item.id, item.dia, item.data)}
+              >
+                <Text>Dia: {item.dia}</Text>
+                <Text>Data: {formattedDate}</Text>
+              </TouchableOpacity>
+            );
+          })}
       </View>
     </View>
   );

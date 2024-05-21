@@ -1,50 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { UserService } from '../../../services/user';
+import { AuthContext } from '../../../context/contextProvider';
+import { format } from 'date-fns';
 
 const DataDetailsScreen = ({ route }) => {
   const { dia, data, horarios } = route.params;
   const [horarioSelecionado, setHorarioSelecionado] = useState(null);
+  const userService = new UserService();
+  const { userInfos } = useContext(AuthContext);
 
-  const selecionarHorario = (id) => {
-    if (horarioSelecionado === id) {
-      Alert.alert('Atenção!', 'Este horário já foi selecionado.');
-    } else {
-      setHorarioSelecionado(id);
-      Alert.alert('Sucesso!', 'Seu horário foi marcado');
+  const selecionarHorario = async (horarioId) => {
+    try {
+      if (!userInfos || !userInfos.id) {
+        throw new Error('Usuário não autenticado');
+      }
+
+      const userId = userInfos.id;
+      console.log(
+        'Tentando marcar horário para usuário:',
+        userId,
+        'com horário:',
+        horarioId
+      );
+
+      const update = await userService.marcarHorario(horarioId, userId);
+
+      Alert.alert('Resposta do serviço de marcação de horário:', update);
+    } catch (error) {
+      console.error('Erro ao marcar horário:', error);
+      Alert.alert(
+        'Erro',
+        error.message || 'Ocorreu um erro ao marcar o horário'
+      );
     }
   };
+
+  const formattedDate = format(new Date(data), 'dd/MM/yyyy');
 
   return (
     <View style={styles.container}>
       <StatusBar hidden />
       <View style={styles.textContainer}>
         <Text style={styles.text}>Dia: {dia}</Text>
-        <Text style={styles.text}>Data: {data}</Text>
+        <Text style={styles.text}>Data: {formattedDate}</Text>
       </View>
       <View style={styles.contentContainer}>
         <Text style={styles.text}>Horários disponíveis:</Text>
         <View style={styles.cardContainer}>
-          {horarios.map((item) => {
-            return (
-              <TouchableOpacity
-                key={item.id}
-                style={[
-                  styles.card,
-                  horarioSelecionado === item.id ? styles.disabledCard : null,
-                ]}
-                onPress={() => selecionarHorario(item.id)}
-              >
-                <Text>{item.horario}</Text>
-              </TouchableOpacity>
-            );
-          })}
+          {horarios.map((item) => (
+            <TouchableOpacity
+              key={item.id}
+              style={[
+                styles.card,
+                !item.disponivel ? styles.disabledCard : null,
+                horarioSelecionado === item.id ? styles.selectedCard : null,
+              ]}
+              onPress={() => selecionarHorario(item.id)}
+              disabled={!item.disponivel}
+            >
+              <Text style={styles.cardText}>{item.horario}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
       <View style={styles.footerContainer}>
-        <Text>
-          * Os horários disponiveis ficam em verde e os que não estão
-          dísponiveis ficam em vermelho
+        <Text style={styles.text}>
+          * Os horários disponíveis ficam em verde e os que não estão
+          disponíveis ficam em vermelho
         </Text>
       </View>
     </View>
@@ -105,6 +129,13 @@ const styles = StyleSheet.create({
   },
   disabledCard: {
     backgroundColor: '#FF0000',
+    color: '#fff',
+  },
+  selectedCard: {
+    backgroundColor: '#FFFF00',
+  },
+  cardText: {
+    color: '#000000',
   },
 });
 

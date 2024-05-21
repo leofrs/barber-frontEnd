@@ -10,6 +10,23 @@ export class AdminService {
     return getUser;
   }
 
+  async getUserById(userId) {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    const response = await fetch(
+      `http://192.168.1.110:3001/user?id=${userId}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .catch((error) => console.log('Erro ao enviar requisição:', error));
+
+    return response;
+  }
+
   async apiHorariosDisponiveis(diaSemanaId) {
     const requestOptions = {
       method: 'GET',

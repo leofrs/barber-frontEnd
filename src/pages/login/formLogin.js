@@ -27,34 +27,32 @@ export default function FormLogin({ navigation }) {
     },
   });
 
-  const { setUser, setIsAdmin } = useContext(AuthContext);
+  const { setUser, setIsAdmin, setUserInfos } = useContext(AuthContext);
   const userService = new UserService();
 
   const admin = { name: 'jardel', password: 'jaja' };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const { name, password } = data;
-    const loginUser = userService.getUser({ name, password });
+    const dataUser = await userService.getUser({ name, password });
+
     try {
       if (name === admin.name && password === admin.password) {
         setUser(name);
         setIsAdmin(true);
         navigation.navigate('AdminHome');
         Alert.alert(
-          `Seja bem vindo ${name}`,
-          'Você está logado como administrador.'
+          'Seja bem vindo Chefe',
+          `É um prazer lhe receber novamente ${name}`
         );
-        return;
-      } else if (loginUser) {
-        setUser(name);
+      } else if (dataUser) {
+        setUser(dataUser);
+        setUserInfos(dataUser);
         navigation.navigate('HomeUser');
-        Alert.alert(
-          `Seja bem vindo ${name}`,
-          'Atendimento de Segunda à Sexta com horário marcado. Aos Sabádos é por ordem de chegada.'
-        );
+        Alert.alert('Seja bem vindo', `Muito bem vindo ${name}`);
       }
     } catch (error) {
-      Alert.alert('Error', `Error ao fazer login foi encontrado: ${error}`);
+      console.error('Erro ao verificar o usuário:', error);
     }
   };
 

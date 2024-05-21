@@ -16,6 +16,8 @@ const userService = new UserService();
 
 import NavBar from '../../components/sair';
 
+import { format } from 'date-fns';
+
 export default function DataPage({ navigation }) {
   const [userData, setUserData] = useState(null);
 
@@ -46,26 +48,31 @@ export default function DataPage({ navigation }) {
       Alert.alert(`Error na requisição foi encontrado: ${error}`);
     }
   };
+
   return (
     <View style={styles.container}>
       <StatusBar hidden />
       <Text style={{ marginBottom: 20, color: '#FFEFC7' }}>
-        Seja bem vindo {user}!
+        Seja bem vindo {user.name}!;
       </Text>
       <Image source={require('../../../assets/logo.png')} style={styles.logo} />
 
       <View style={styles.cardContainer}>
         {userData &&
-          userData.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              style={styles.card}
-              onPress={() => handleHorarios(item.id, item.dia, item.data)}
-            >
-              <Text>Dia: {item.dia}</Text>
-              <Text>Data: {item.data}</Text>
-            </TouchableOpacity>
-          ))}
+          userData.map((item) => {
+            const formattedDate = format(new Date(item.data), 'dd/MM/yyyy');
+
+            return (
+              <TouchableOpacity
+                key={item.id}
+                style={styles.card}
+                onPress={() => handleHorarios(item.id, item.dia, item.data)}
+              >
+                <Text>Dia: {item.dia}</Text>
+                <Text>Data: {formattedDate}</Text>
+              </TouchableOpacity>
+            );
+          })}
       </View>
       <NavBar />
     </View>

@@ -10,11 +10,10 @@ export class UserService {
       body: JSON.stringify({ name, email, password }),
     };
     const apiUserPost = await fetch(
-      'https://barber-back-end.vercel.app/register',
+      'http://192.168.1.110:3001/register',
       requestOptions
     )
       .then((response) => response.json())
-      .then((data) => console.log(data))
       .catch((error) => Alert.alert('Erro ao enviar requisição:', error));
 
     return apiUserPost;
@@ -28,15 +27,20 @@ export class UserService {
       },
       body: JSON.stringify({ name, password }),
     };
-    const apiUserPost = await fetch(
-      'https://barber-back-end.vercel.app/login',
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => Alert.alert('Erro ao enviar requisição:', error));
 
-    return apiUserPost;
+    try {
+      const response = await fetch(
+        'http://192.168.1.110:3001/login',
+        requestOptions
+      );
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      console.error('Erro ao enviar requisição:', error);
+      Alert.alert('Erro ao enviar requisição:', error.message);
+      return null; // Ou outra forma de indicar um erro para o chamador
+    }
   }
 
   async getCalendario() {
@@ -62,5 +66,28 @@ export class UserService {
       .catch((error) => Alert.alert('Erro ao enviar requisição:', error));
 
     return response;
+  }
+
+  async marcarHorario(horarioId, userId) {
+    try {
+      const response = await fetch(
+        `http://192.168.1.110:3001/horarios?id=${horarioId}`,
+        {
+          method: 'PATCH', // Assuming PATCH method for partial update
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Failed to mark the time slot');
+      }
+      return await response.json();
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 }
