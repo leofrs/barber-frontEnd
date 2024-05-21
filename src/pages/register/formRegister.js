@@ -129,11 +129,9 @@ export default function FormLogin({ navigation }) {
             Senha deve conter no mínimo 4 caracteres.
           </Text>
         )}
-        <Button
-          color={'blue'}
-          title="Cadastrar"
-          onPress={handleSubmit(onSubmit)}
-        />
+        <Pressable style={styles.buttonLogin} onPress={handleSubmit(onSubmit)}>
+          <Text style={{ textAlign: 'center' }}>Cadastrar</Text>
+        </Pressable>
       </View>
 
       <View style={{ marginTop: 25, width: 350 }}>
@@ -191,6 +189,16 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 10,
+  },
+  buttonLogin: {
+    borderWidth: 2,
+    width: 300,
+    height: 'auto',
+    paddingVertical: 5,
+    borderRadius: 25,
+    borderColor: '#FFEFC7',
+    backgroundColor: '#FFEFC7',
+    color: '#000000',
   },
   signUpButton: {
     marginTop: 20,

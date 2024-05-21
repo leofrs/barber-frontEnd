@@ -122,11 +122,9 @@ export default function FormLogin({ navigation }) {
           </Text>
         )}
 
-        <Button
-          color={'blue'}
-          title="Entrar"
-          onPress={handleSubmit(onSubmit)}
-        />
+        <Pressable style={styles.buttonLogin} onPress={handleSubmit(onSubmit)}>
+          <Text style={{ textAlign: 'center' }}>Entrar</Text>
+        </Pressable>
       </View>
 
       <View style={{ marginTop: 25, width: 350 }}>
@@ -183,6 +181,16 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 10,
+  },
+  buttonLogin: {
+    borderWidth: 2,
+    width: 300,
+    height: 'auto',
+    paddingVertical: 5,
+    borderRadius: 25,
+    borderColor: '#FFEFC7',
+    backgroundColor: '#FFEFC7',
+    color: '#000000',
   },
   signUpText: {
     textAlign: 'center',

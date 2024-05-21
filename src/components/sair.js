@@ -7,10 +7,10 @@ export default function NavBar({ navigation }) {
 
   const handleSair = () => {
     setUser(null);
-    Alert.alert('Te vejo em breve');
+    Alert.alert('Obrigado!', 'Agradeço a preferência');
   };
   return (
-    <View>
+    <View style={{ marginEnd: 35 }}>
       <Button title="Sair" color="red" onPress={() => handleSair()} />
     </View>
   );

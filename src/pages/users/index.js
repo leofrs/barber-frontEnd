@@ -4,8 +4,8 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   Alert,
+  Image,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useContext } from 'react';
@@ -52,10 +52,37 @@ export default function DataPage({ navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar hidden />
-      <Text style={{ marginBottom: 20, color: '#FFEFC7' }}>
-        Seja bem vindo {user.name}!;
-      </Text>
-      <Image source={require('../../../assets/logo.png')} style={styles.logo} />
+      <View
+        style={{
+          alignItems: 'center',
+          width: '100%',
+          height: '10%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: '#000000',
+        }}
+      >
+        <Image
+          source={require('../../../assets/logo.png')}
+          style={styles.logo}
+        />
+        <NavBar />
+      </View>
+
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Seja bem vindo</Text>
+        <Text style={{ marginVertical: 5, color: '#000000' }}>{user.name}</Text>
+        <Text
+          style={{
+            marginBottom: 20,
+            color: '#000000',
+            maxWidth: 250,
+            textAlign: 'center',
+          }}
+        >
+          Agradeço pela sua preferência e vamos juntos melhorar cada vez mais
+        </Text>
+      </View>
 
       <View style={styles.cardContainer}>
         {userData &&
@@ -68,13 +95,12 @@ export default function DataPage({ navigation }) {
                 style={styles.card}
                 onPress={() => handleHorarios(item.id, item.dia, item.data)}
               >
-                <Text>Dia: {item.dia}</Text>
-                <Text>Data: {formattedDate}</Text>
+                <Text>{item.dia}</Text>
+                <Text>{formattedDate}</Text>
               </TouchableOpacity>
             );
           })}
       </View>
-      <NavBar />
     </View>
   );
 }
@@ -82,16 +108,30 @@ export default function DataPage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#000000',
+  },
+  header: {
+    width: '100%',
+    height: '15%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerText: {
+    color: '#000000',
+    fontSize: 25,
   },
   cardContainer: {
+    width: '100%',
+    height: '70%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginBottom: 25,
+    alignContent: 'center',
+    borderColor: '#FFEFC7',
+    borderTopStartRadius: 45,
+    borderTopEndRadius: 45,
+    backgroundColor: '#000000',
   },
   card: {
     backgroundColor: '#fff',
@@ -134,8 +174,8 @@ const styles = StyleSheet.create({
     color: 'blue',
   },
   logo: {
-    width: 200,
-    height: 200,
-    marginBottom: 15,
+    width: '50%',
+    height: '100%',
+    objectFit: 'scale-down',
   },
 });

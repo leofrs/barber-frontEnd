@@ -27,30 +27,14 @@ export default function App() {
                       name="HomeUser"
                       component={UsersPage}
                       options={{
-                        title: 'Home',
-                        headerTitleStyle: {
-                          color: '#FFEFC7',
-                        },
-                        headerTitleAlign: 'center',
-
-                        headerStyle: {
-                          backgroundColor: '#000000',
-                        },
+                        headerShown: false,
                       }}
                     />
                     <Stack.Screen
                       name="Horarios"
                       component={DataDetailsScreen}
                       options={{
-                        title: 'Horários',
-                        headerTitleStyle: {
-                          color: '#FFEFC7',
-                        },
-                        headerTitleAlign: 'center',
-
-                        headerStyle: {
-                          backgroundColor: '#000000',
-                        },
+                        headerShown: false,
                       }}
                     />
                     {isAdmin && (
@@ -127,7 +111,6 @@ export default function App() {
                     name="Home"
                     component={HomePage}
                     options={{
-                      title: 'Home',
                       headerShown: false,
                     }}
                   />
