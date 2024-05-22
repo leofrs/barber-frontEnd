@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { ScrollView, StyleSheet, Alert, scr } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { DataTable } from 'react-native-paper';
 
@@ -55,107 +55,74 @@ const DataDetailsScreenAdmin = ({ route }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      horizontal={true}
+      contentContainerStyle={{
+        flex: 1,
+        justifyContent: 'center',
+      }}
+    >
       <StatusBar hidden />
-      <View style={styles.textContainer}>
-        <Text style={styles.text}>Dia: {dia}</Text>
-        <Text style={styles.text}>Data: {formattedDate}</Text>
-      </View>
-      <View style={styles.contentContainer}>
-        <DataTable>
-          <DataTable.Header style={styles.tableHeader}>
-            <DataTable.Title
-              style={{
-                justifyContent: 'center',
-              }}
-            >
-              Horário
-            </DataTable.Title>
-            <DataTable.Title
-              style={{
-                justifyContent: 'center',
-              }}
-            >
-              Disponível
-            </DataTable.Title>
-            <DataTable.Title
-              style={{
-                justifyContent: 'center',
-              }}
-            >
-              Cliente
-            </DataTable.Title>
-          </DataTable.Header>
+      <DataTable style={styles.containerTable}>
+        <DataTable.Header style={styles.tableHeader}>
+          <DataTable.Title style={styles.tableHeaderText}>
+            Horario
+          </DataTable.Title>
+          <DataTable.Title style={styles.tableHeaderText}>
+            Disponível
+          </DataTable.Title>
+          <DataTable.Title style={styles.tableHeaderText}>
+            Cliente
+          </DataTable.Title>
+        </DataTable.Header>
 
-          {horariosDisponiveis.map((item) => (
-            <DataTable.Row key={item.id} style={{ borderColor: '#000' }}>
-              <DataTable.Cell
-                style={{
-                  width: '100%',
-                  backgroundColor: '#DCDCDC',
-                  justifyContent: 'center',
-                }}
-              >
-                {item.horario}
-              </DataTable.Cell>
-              <DataTable.Cell
-                style={{
-                  width: '100%',
-                  backgroundColor: '#DCDCDC',
-                  justifyContent: 'center',
-                }}
-              >
-                {item.disponivel ? 'Sim' : 'Não'}
-              </DataTable.Cell>
-              <DataTable.Cell
-                style={{
-                  width: '100%',
-                  backgroundColor: '#DCDCDC',
-
-                  justifyContent: 'center',
-                }}
-              >
-                {item.userName}
-              </DataTable.Cell>
-            </DataTable.Row>
-          ))}
-        </DataTable>
-      </View>
-    </View>
+        {horariosDisponiveis.map((item) => (
+          <DataTable.Row key={item.id} style={{ borderColor: '#000' }}>
+            <DataTable.Cell
+              style={{
+                width: '100%',
+              }}
+            >
+              {item.horario}
+            </DataTable.Cell>
+            <DataTable.Cell
+              style={{
+                width: '100%',
+              }}
+            >
+              {item.disponivel ? 'Sim' : 'Não'}
+            </DataTable.Cell>
+            <DataTable.Cell
+              style={{
+                width: '100%',
+              }}
+            >
+              {item.userName}
+            </DataTable.Cell>
+          </DataTable.Row>
+        ))}
+      </DataTable>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  containerTable: {
+    gap: 10,
     width: '100%',
-    height: '100%',
-    padding: 20,
-    paddingHorizontal: 55,
-    backgroundColor: '#000',
   },
   tableHeader: {
+    width: '100%',
     backgroundColor: '#DCDCDC',
   },
-  textContainer: {
-    maxWidth: 300,
-    height: 'auto',
-    marginBottom: 55,
-    alignItems: 'center',
+  tableHeaderText: {
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
-  contentContainer: {
-    width: 300,
-    height: 'auto',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 15,
-  },
-  text: {
-    color: '#fff',
-    marginBottom: 10,
+  tableCell: {
+    color: '#FFFFFF',
+    textAlign: 'left',
   },
 });
-
 export default DataDetailsScreenAdmin;

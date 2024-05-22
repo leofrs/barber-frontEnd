@@ -14,15 +14,27 @@ export default function AdminPage({ navigation }) {
   };
   return (
     <View style={styles.container}>
-      <View style={{ alignItems: 'center' }}>
+      <View
+        style={{
+          alignItems: 'center',
+          width: '100%',
+          height: '10%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: '#000000',
+        }}
+      >
         <Image
           source={require('../../../assets/logo.png')}
           style={styles.logo}
         />
+        <NavBar />
       </View>
-      <Text style={{ color: '#FFEFC7', marginBottom: 25 }}>
-        Seja bem vindo chefe {user}!
-      </Text>
+      <View style={styles.header}>
+        <Text style={{ marginVertical: 5, color: '#000000' }}>
+          Seja bem vindo Chefe{user.name}
+        </Text>
+      </View>
 
       <View style={styles.cardContainer}>
         <TouchableOpacity style={styles.card} onPress={handleClient}>
@@ -32,22 +44,26 @@ export default function AdminPage({ navigation }) {
           <Text>Agenda</Text>
         </TouchableOpacity>
       </View>
-      <NavBar />
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 5,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#000000',
   },
   cardContainer: {
+    width: '100%',
+    height: '70%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginBottom: 25,
+    alignContent: 'center',
+    borderColor: '#FFEFC7',
+    borderTopStartRadius: 45,
+    borderTopEndRadius: 45,
+    backgroundColor: '#000000',
   },
   card: {
     backgroundColor: '#fff',
@@ -90,8 +106,8 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   logo: {
-    width: 200,
-    height: 200,
-    marginBottom: 15,
+    width: '50%',
+    height: '100%',
+    objectFit: 'scale-down',
   },
 });

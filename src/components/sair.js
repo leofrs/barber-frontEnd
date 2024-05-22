@@ -7,7 +7,7 @@ export default function NavBar({ navigation }) {
 
   const handleSair = () => {
     setUser(null);
-    Alert.alert('Obrigado!', 'Agradeço a preferência');
+    Alert.alert('Obrigado!', 'Agradeço a sua preferência');
   };
   return (
     <View style={{ marginEnd: 35 }}>

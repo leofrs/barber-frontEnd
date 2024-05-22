@@ -100,6 +100,9 @@ export default function HomePage({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
+      <View style={styles.footer}>
+        <Text style={{ color: '#FFEFC7' }}>Desenvolvido por @leofrs9</Text>
+      </View>
     </ImageBackground>
   );
 }
@@ -107,7 +110,7 @@ export default function HomePage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   logo: {
     width: '100%',
@@ -146,5 +149,11 @@ const styles = StyleSheet.create({
     textDecorationLine: 'none',
     fontSize: 18,
     textAlign: 'center',
+  },
+  footer: {
+    width: '100%',
+    position: 'absolute',
+    bottom: 15,
+    alignItems: 'center',
   },
 });

@@ -81,18 +81,33 @@ export default function FormLogin({ navigation }) {
         )}
         <Controller
           control={control}
-          name="email"
+          name="apelido"
           rules={{
-            required: true,
-            pattern: {
-              message: 'Email invalido',
-              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-            },
+            required: false,
           }}
           render={({ field: { value, onChange, onBlur } }) => (
             <TextInput
               style={styles.input}
-              placeholder="Insira seu email"
+              placeholder="Insira seu apelido (caso tenha)"
+              placeholderTextColor={'#FFEFC7'}
+              value={value}
+              onChangeText={onChange}
+              autoCapitalize="none"
+              onBlur={onBlur}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="numero"
+          rules={{
+            required: true,
+          }}
+          render={({ field: { value, onChange, onBlur } }) => (
+            <TextInput
+              style={styles.input}
+              placeholder="Insira seu numero (sem espaços)"
               placeholderTextColor={'#FFEFC7'}
               value={value}
               onChangeText={onChange}
@@ -102,7 +117,7 @@ export default function FormLogin({ navigation }) {
           )}
         />
         {errors.email && (
-          <Text style={styles.errorText}>Email é obrigatório.</Text>
+          <Text style={styles.errorText}>Numero é obrigatório.</Text>
         )}
         <Controller
           control={control}
@@ -166,6 +181,7 @@ export default function FormLogin({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
     backgroundColor: '#000000',

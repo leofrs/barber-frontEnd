@@ -28,6 +28,7 @@ export default function App() {
                       component={UsersPage}
                       options={{
                         headerShown: false,
+                        animation: 'slide_from_right',
                       }}
                     />
                     <Stack.Screen
@@ -43,17 +44,7 @@ export default function App() {
                           name="AdminHome"
                           component={AdminPage}
                           options={{
-                            title: 'Admin Home',
-                            headerTintColor: '#000',
-                            headerTitleStyle: {
-                              color: '#FFEFC7',
-                              fontWeight: 'bold',
-                            },
-                            headerTitleAlign: 'center',
-
-                            headerStyle: {
-                              backgroundColor: '#000000',
-                            },
+                            headerShown: false,
                           }}
                         />
                         <Stack.Screen
@@ -112,35 +103,21 @@ export default function App() {
                     component={HomePage}
                     options={{
                       headerShown: false,
+                      animation: 'slide_from_right',
                     }}
                   />
                   <Stack.Screen
                     name="Login"
                     component={LoginPage}
                     options={{
-                      title: 'Home',
-
-                      headerTitleStyle: {
-                        color: '#FFEFC7',
-                      },
-                      headerTintColor: '#FFEFC7',
-                      headerStyle: {
-                        backgroundColor: '#000000',
-                      },
+                      headerShown: false,
                     }}
                   />
                   <Stack.Screen
                     name="Cadastro"
                     component={RegisterPage}
                     options={{
-                      title: 'Login',
-                      headerTitleStyle: {
-                        color: '#FFEFC7',
-                      },
-                      headerTintColor: '#FFEFC7',
-                      headerStyle: {
-                        backgroundColor: '#000000',
-                      },
+                      headerShown: false,
                     }}
                   />
                 </Stack.Navigator>
