@@ -7,7 +7,7 @@ import {
   Alert,
   Image,
 } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+
 import { useContext } from 'react';
 import { AuthContext } from '../../context/contextProvider';
 
@@ -16,7 +16,7 @@ const userService = new UserService();
 
 import NavBar from '../../components/sair';
 
-import { format } from 'date-fns';
+import moment from 'moment';
 
 export default function DataPage({ navigation }) {
   const [userData, setUserData] = useState(null);
@@ -86,7 +86,8 @@ export default function DataPage({ navigation }) {
       <View style={styles.cardContainer}>
         {userData &&
           userData.map((item) => {
-            const formattedDate = format(new Date(item.data), 'dd/MM/yyyy');
+            const originalDate = item.data;
+            const formattedDate = moment.utc(originalDate).format('DD/MM/YYYY');
 
             return (
               <TouchableOpacity

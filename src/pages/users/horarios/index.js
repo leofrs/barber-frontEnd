@@ -7,10 +7,9 @@ import {
   Alert,
   Image,
 } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import { UserService } from '../../../services/user';
 import { AuthContext } from '../../../context/contextProvider';
-import { format } from 'date-fns';
+import moment from 'moment';
 
 import NavBar from '../../../components/sair';
 
@@ -46,7 +45,8 @@ const DataDetailsScreen = ({ route }) => {
     }
   };
 
-  const formattedDate = format(new Date(data), 'dd/MM/yyyy');
+  const originalDate = data;
+  const formattedDate = moment.utc(originalDate).format('DD/MM/YYYY');
 
   return (
     <View style={styles.container}>

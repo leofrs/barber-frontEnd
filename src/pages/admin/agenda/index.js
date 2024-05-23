@@ -12,7 +12,7 @@ import { AdminService } from '../../../services/admin';
 
 import NavBar from '../../../components/sair';
 
-import { format } from 'date-fns';
+import moment from 'moment';
 
 const adminService = new AdminService();
 
@@ -76,7 +76,8 @@ export function HorariosMarcados({ navigation }) {
       <View style={styles.cardContainer}>
         {data &&
           data.map((item) => {
-            const formattedDate = format(new Date(item.data), 'dd/MM/yyyy');
+            const originalDate = item.data;
+            const formattedDate = moment.utc(originalDate).format('DD/MM/YYYY');
 
             return (
               <TouchableOpacity
