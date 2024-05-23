@@ -10,7 +10,7 @@ export class UserService {
       body: JSON.stringify({ name, email, password }),
     };
     const apiUserPost = await fetch(
-      'http://192.168.1.110:3001/register',
+      'https://barber-backend-chi.vercel.app/register',
       requestOptions
     )
       .then((response) => response.json())
@@ -30,7 +30,7 @@ export class UserService {
 
     try {
       const response = await fetch(
-        'http://192.168.1.110:3001/login',
+        'https://barber-backend-chi.vercel.app/login',
         requestOptions
       );
       const data = await response.json();
@@ -44,7 +44,9 @@ export class UserService {
   }
 
   async getCalendario() {
-    const apiCalendario = await fetch('http://192.168.1.110:3001/calendario')
+    const apiCalendario = await fetch(
+      'https://barber-backend-chi.vercel.app/calendario'
+    )
       .then((response) => response.json())
       .catch((error) => Alert.alert('Erro ao enviar requisição:', error));
 
@@ -60,7 +62,7 @@ export class UserService {
       body: JSON.stringify(diaSemanaId),
     };
     const response = await fetch(
-      `http://192.168.1.110:3001/horariosDisponiveis?diaSemanaId=${diaSemanaId}`
+      `https://barber-backend-chi.vercel.app/horariosDisponiveis?diaSemanaId=${diaSemanaId}`
     )
       .then((response) => response.json())
       .catch((error) => Alert.alert('Erro ao enviar requisição:', error));
@@ -71,7 +73,7 @@ export class UserService {
   async marcarHorario(horarioId, userId) {
     try {
       const response = await fetch(
-        `http://192.168.1.110:3001/horarios?id=${horarioId}`,
+        `https://barber-backend-chi.vercel.app/horarios?id=${horarioId}`,
         {
           method: 'PATCH', // Assuming PATCH method for partial update
           headers: {

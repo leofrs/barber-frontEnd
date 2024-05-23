@@ -28,7 +28,7 @@ export default function App() {
                       component={UsersPage}
                       options={{
                         headerShown: false,
-                        animation: 'slide_from_right',
+                        fullScreenGestureEnabled: false,
                       }}
                     />
                     <Stack.Screen
@@ -36,6 +36,7 @@ export default function App() {
                       component={DataDetailsScreen}
                       options={{
                         headerShown: false,
+                        fullScreenGestureEnabled: false,
                       }}
                     />
                     {isAdmin && (
@@ -45,51 +46,31 @@ export default function App() {
                           component={AdminPage}
                           options={{
                             headerShown: false,
+                            fullScreenGestureEnabled: false,
                           }}
                         />
                         <Stack.Screen
                           name="Clients"
                           component={UsersDetalilsScreen}
                           options={{
-                            title: 'Clientes',
-                            headerTintColor: '#FFEFC7',
-                            headerTitleStyle: {
-                              color: '#FFEFC7',
-                            },
-                            headerTitleAlign: 'center',
-                            headerStyle: {
-                              backgroundColor: '#000000',
-                            },
+                            headerShown: false,
+                            fullScreenGestureEnabled: false,
                           }}
                         />
                         <Stack.Screen
                           name="Agenda"
                           component={HorariosMarcados}
                           options={{
-                            title: 'Agenda',
-                            headerTintColor: '#FFEFC7',
-                            headerTitleStyle: {
-                              color: '#FFEFC7',
-                            },
-                            headerTitleAlign: 'center',
-                            headerStyle: {
-                              backgroundColor: '#000000',
-                            },
+                            headerShown: false,
+                            fullScreenGestureEnabled: false,
                           }}
                         />
                         <Stack.Screen
                           name="HorariosAdmin"
                           component={DataDetailsScreenAdmin}
                           options={{
-                            title: 'Horários',
-                            headerTintColor: '#FFEFC7',
-                            headerTitleStyle: {
-                              color: '#FFEFC7',
-                            },
-                            headerTitleAlign: 'center',
-                            headerStyle: {
-                              backgroundColor: '#000000',
-                            },
+                            headerShown: false,
+                            fullScreenGestureEnabled: false,
                           }}
                         />
                       </>
@@ -103,7 +84,7 @@ export default function App() {
                     component={HomePage}
                     options={{
                       headerShown: false,
-                      animation: 'slide_from_right',
+                      fullScreenGestureEnabled: false,
                     }}
                   />
                   <Stack.Screen
@@ -111,6 +92,7 @@ export default function App() {
                     component={LoginPage}
                     options={{
                       headerShown: false,
+                      fullScreenGestureEnabled: false,
                     }}
                   />
                   <Stack.Screen
@@ -118,6 +100,7 @@ export default function App() {
                     component={RegisterPage}
                     options={{
                       headerShown: false,
+                      fullScreenGestureEnabled: false,
                     }}
                   />
                 </Stack.Navigator>

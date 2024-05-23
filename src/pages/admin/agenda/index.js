@@ -1,7 +1,16 @@
-import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  Image,
+} from 'react-native';
 import { useEffect, useState } from 'react';
 
 import { AdminService } from '../../../services/admin';
+
+import NavBar from '../../../components/sair';
 
 import { format } from 'date-fns';
 
@@ -41,6 +50,29 @@ export function HorariosMarcados({ navigation }) {
   };
   return (
     <View style={styles.container}>
+      <View
+        style={{
+          alignItems: 'center',
+          width: '100%',
+          height: '10%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: '#000000',
+        }}
+      >
+        <Image
+          source={require('../../../../assets/logo.png')}
+          style={styles.logo}
+        />
+        <NavBar />
+      </View>
+
+      <View>
+        <Text style={{ marginVertical: 5, color: '#000000', fontSize: 20 }}>
+          Selecione o dia e veja a sua agenda
+        </Text>
+      </View>
+
       <View style={styles.cardContainer}>
         {data &&
           data.map((item) => {
@@ -65,16 +97,20 @@ export function HorariosMarcados({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#000000',
   },
   cardContainer: {
+    width: '100%',
+    height: '70%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginBottom: 25,
+    alignContent: 'center',
+    borderColor: '#FFEFC7',
+    borderTopStartRadius: 45,
+    borderTopEndRadius: 45,
+    backgroundColor: '#000000',
   },
   card: {
     backgroundColor: '#fff',
@@ -117,8 +153,8 @@ const styles = StyleSheet.create({
     color: 'blue',
   },
   logo: {
-    width: 200,
-    height: 200,
-    marginBottom: 15,
+    width: '50%',
+    height: '100%',
+    objectFit: 'scale-down',
   },
 });

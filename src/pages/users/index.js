@@ -51,7 +51,6 @@ export default function DataPage({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <StatusBar hidden />
       <View
         style={{
           alignItems: 'center',

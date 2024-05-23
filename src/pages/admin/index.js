@@ -31,7 +31,7 @@ export default function AdminPage({ navigation }) {
         <NavBar />
       </View>
       <View style={styles.header}>
-        <Text style={{ marginVertical: 5, color: '#000000' }}>
+        <Text style={{ marginVertical: 5, color: '#000000', fontSize: 20 }}>
           Seja bem vindo Chefe{user.name}
         </Text>
       </View>

@@ -1,7 +1,7 @@
 export class AdminService {
   async getAllUsers() {
     const getUser = await fetch(
-      'https://barber-back-end.vercel.app/admin/users'
+      'https://barber-backend-chi.vercel.app/allUsers'
     ).then((res) => {
       if (res.status === 200) {
         return res.json();
@@ -18,7 +18,7 @@ export class AdminService {
       },
     };
     const response = await fetch(
-      `http://192.168.1.110:3001/user?id=${userId}`,
+      `https://barber-backend-chi.vercel.app/user?id=${userId}`,
       requestOptions
     )
       .then((response) => response.json())
@@ -36,7 +36,7 @@ export class AdminService {
       body: JSON.stringify(diaSemanaId),
     };
     const response = await fetch(
-      `http://192.168.1.110:3001/horariosDisponiveis?diaSemanaId=${diaSemanaId}`
+      `https://barber-backend-chi.vercel.app/horariosDisponiveis?diaSemanaId=${diaSemanaId}`
     )
       .then((response) => response.json())
       .catch((error) => Alert.alert('Erro ao enviar requisição:', error));
@@ -45,7 +45,9 @@ export class AdminService {
   }
 
   async getCalendario() {
-    const apiCalendario = await fetch('http://192.168.1.110:3001/calendario')
+    const apiCalendario = await fetch(
+      'https://barber-backend-chi.vercel.app/calendario'
+    )
       .then((response) => response.json())
       .catch((error) => Alert.alert('Erro ao enviar requisição:', error));
 

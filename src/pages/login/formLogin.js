@@ -58,7 +58,6 @@ export default function FormLogin({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <StatusBar hidden />
       <View style={{ alignItems: 'center' }}>
         <Image
           source={require('../../../assets/logo.png')}

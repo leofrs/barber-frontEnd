@@ -50,7 +50,6 @@ const DataDetailsScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar hidden />
       <View
         style={{
           alignItems: 'center',

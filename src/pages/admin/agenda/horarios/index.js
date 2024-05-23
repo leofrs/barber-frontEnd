@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, Alert, scr } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import { ScrollView, StyleSheet, Alert, View, Image } from 'react-native';
 import { DataTable } from 'react-native-paper';
-
+import NavBar from '../../../../components/sair';
 import { format } from 'date-fns';
-
 import { AdminService } from '../../../../services/admin';
+
 const adminService = new AdminService();
 
 const DataDetailsScreenAdmin = ({ route }) => {
@@ -59,10 +58,26 @@ const DataDetailsScreenAdmin = ({ route }) => {
       horizontal={true}
       contentContainerStyle={{
         flex: 1,
-        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
-      <StatusBar hidden />
+      <View
+        style={{
+          alignItems: 'center',
+          width: '100%',
+          height: '10%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: '#000000',
+        }}
+      >
+        <Image
+          source={require('../../../../../assets/logo.png')}
+          style={styles.logo}
+        />
+        <NavBar />
+      </View>
       <DataTable style={styles.containerTable}>
         <DataTable.Header style={styles.tableHeader}>
           <DataTable.Title style={styles.tableHeaderText}>
@@ -123,6 +138,11 @@ const styles = StyleSheet.create({
   tableCell: {
     color: '#FFFFFF',
     textAlign: 'left',
+  },
+  logo: {
+    width: '50%',
+    height: '100%',
+    objectFit: 'scale-down',
   },
 });
 export default DataDetailsScreenAdmin;

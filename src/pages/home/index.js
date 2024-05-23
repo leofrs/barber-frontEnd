@@ -14,7 +14,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 export default function HomePage({ navigation }) {
   const openInstagram = () => {
-    const username = 'barbeiro_jardel1'; // Substitua 'nomedeusuario' pelo nome de usuário do perfil que deseja abrir
+    const username = 'barbeiro_jardel1';
     const instagramURL = `instagram://user?username=${username}`;
     const fallbackURL = `https://www.instagram.com/${username}`;
 
@@ -46,33 +46,22 @@ export default function HomePage({ navigation }) {
   };
   return (
     <ImageBackground
-      source={require('../../../assets/back.png')} // substitua pelo caminho da sua imagem de fundo
+      source={require('../../../assets/homebanner.png')}
       style={styles.container}
     >
-      <StatusBar hidden />
-      <View
-        style={{
-          alignItems: 'center',
-          width: '100%',
-          height: 200,
-        }}
-      >
-        <Image
-          source={require('../../../assets/logoSemFundo.png')}
-          style={styles.logo}
-        />
-      </View>
+      <StatusBar backgroundColor="#FFEF" />
 
       <View
         style={{
-          marginTop: 25,
           width: '100%',
-          height: 200,
+          height: 'auto',
+          padding: 50,
+          position: 'absolute',
+          bottom: 180,
+          alignItems: 'center',
           flexDirection: 'column',
           justifyContent: 'center',
-          alignItems: 'center',
           gap: 25,
-          marginBottom: 55,
         }}
       >
         <Pressable style={styles.buttonLogin}>
@@ -110,6 +99,7 @@ export default function HomePage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
     justifyContent: 'center',
   },
   logo: {
