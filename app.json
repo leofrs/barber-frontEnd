@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "barber-frontEnd",
-    "slug": "barber-frontEnd",
+    "name": "jardel",
+    "slug": "jardel",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,24 +11,17 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.leo159.barberApp"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "e206b9cc-78fe-4869-a0e2-fa81df761f66"
-      }
     }
   }
 }
