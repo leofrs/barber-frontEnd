@@ -34,7 +34,7 @@ export const Home = ({ navigation }: any) => {
 
         <View style={styles.footerContainer}>
           <Text style={{ textAlign: "center", color: "#ffffff" }}>
-            Desenvolvido por @leofrs9
+            Desenvolvido por © L.S Development
           </Text>
         </View>
       </ImageBackground>

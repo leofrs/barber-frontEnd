@@ -1,5 +1,8 @@
+import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
+
+import { UserService } from "../../services/api";
 
 export default function FormLogin({ navigation }: any) {
   const {
@@ -8,26 +11,42 @@ export default function FormLogin({ navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      numero: "",
+      name: "",
       password: "",
     },
   });
 
-  const onSubmit = () => {};
+  const userService = new UserService();
+
+  const onSubmit = async ({ name, password }) => {
+    try {
+      const res = await userService.getUser({ name, password });
+
+      if (res) {
+        // Navegue para a tela principal ou faça outras ações de sucesso
+        navigation.navigate("HomeScreenPrivate");
+      } else {
+        alert("Login falhou. Verifique suas credenciais.");
+      }
+    } catch (error) {
+      console.error("Erro de login:", error);
+      alert("Ocorreu um erro durante o login. Tente novamente.");
+    }
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Faça o seu login</Text>
       <Controller
         control={control}
-        name="numero"
+        name="name"
         rules={{
           required: true,
         }}
         render={({ field: { value, onChange, onBlur } }) => (
           <TextInput
             style={styles.input}
-            placeholder="Insira seu número"
+            placeholder="Insira seu nome"
             placeholderTextColor={"#FFEFC7"}
             value={value}
             onChangeText={onChange}
@@ -36,7 +55,7 @@ export default function FormLogin({ navigation }: any) {
           />
         )}
       />
-      {errors.numero && (
+      {errors.name && (
         <Text style={styles.errorText}>Numero é obrigatório.</Text>
       )}
       <Controller

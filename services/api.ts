@@ -58,7 +58,12 @@ export class AdminService {
 }
 
 export class UserService {
-  async postUser({ name, apelido, numero, password }) {
+  async postUser(
+    name: string,
+    apelido: string,
+    numero: number,
+    password: string
+  ) {
     const requestOptions = {
       method: "POST",
       headers: {
@@ -95,7 +100,7 @@ export class UserService {
       return data;
     } catch (error) {
       console.error("Erro ao enviar requisição:", error);
-      Alert.alert("Erro ao enviar requisição:", error.message);
+      Alert.alert("Erro ao enviar requisição:");
       return null; // Ou outra forma de indicar um erro para o chamador
     }
   }

@@ -23,8 +23,8 @@ export default function PrivateUser() {
       }}
       initialRouteName="HomeScreen"
     >
-      <Stack.Screen name="HomeScreen" component={HomeClient} />
-      <Stack.Screen name="AgendamentoScreen" component={Agendamento} />
+      <Stack.Screen name="HomeScreenPrivate" component={HomeClient} />
+      <Stack.Screen name="AgendamentoScreenPrivate" component={Agendamento} />
     </Stack.Navigator>
   );
 }
